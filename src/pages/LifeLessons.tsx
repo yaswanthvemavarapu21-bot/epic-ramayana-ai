@@ -56,7 +56,7 @@ const LifeLessons = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search lessons..."
-          className="w-full rounded-xl border border-border bg-card py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
+          className="w-full rounded-xl glass-card py-3 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
         />
       </div>
 
@@ -70,7 +70,7 @@ const LifeLessons = () => {
           <motion.div
             key={lesson.id}
             variants={item}
-            className="rounded-xl border border-gold/15 bg-card p-5 shadow-card"
+            className="rounded-xl glass-card p-5"
           >
             <div className="mb-2 flex items-center gap-2">
               <Sparkles className="h-3.5 w-3.5 text-primary" />

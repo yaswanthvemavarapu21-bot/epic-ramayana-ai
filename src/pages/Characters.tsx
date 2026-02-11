@@ -68,7 +68,7 @@ const Characters = () => {
             key={char.id}
             variants={item}
             onClick={() => navigate(`/chat/${char.id}`)}
-            className="group rounded-xl border border-gold/20 bg-card p-5 text-left shadow-card transition-all duration-300 hover:border-gold/40 hover:shadow-gold active:scale-[0.98]"
+            className="group rounded-xl glass-card glass-card-hover p-5 text-left"
           >
             <div className="flex items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary/10">

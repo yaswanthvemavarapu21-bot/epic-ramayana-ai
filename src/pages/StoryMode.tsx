@@ -45,6 +45,13 @@ const kandas = [
     description: "The great battle between Rama's forces and Ravana's army.",
     chapters: 131,
   },
+  {
+    id: "uttara",
+    name: "Uttara Kanda",
+    subtitle: "The Final Book",
+    description: "Rama's reign, the test of Sita, and the conclusion of the epic.",
+    chapters: 111,
+  },
 ];
 
 const container = {
@@ -89,7 +96,7 @@ const StoryMode = () => {
             key={kanda.id}
             variants={item}
             onClick={() => navigate(`/story/${kanda.id}`)}
-            className="group flex items-center justify-between rounded-xl border border-gold/15 bg-card p-4 text-left shadow-card transition-all duration-300 hover:border-gold/30 active:scale-[0.98]"
+            className="group flex items-center justify-between rounded-xl glass-card glass-card-hover p-4 text-left"
           >
             <div className="flex items-center gap-4">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-display text-lg font-bold text-primary">

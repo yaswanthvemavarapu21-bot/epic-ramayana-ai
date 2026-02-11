@@ -76,6 +76,17 @@ const storyData: Record<string, {
     lesson:
       "No matter how powerful evil becomes, righteousness will ultimately prevail. The battle for dharma requires patience, sacrifice, and unwavering resolve.",
   },
+  uttara: {
+    title: "Uttara Kanda",
+    event: "The Reign of Rama",
+    sanskrit: "रामः अयोध्यायां राज्यं शासितवान्।",
+    explanation:
+      "After the victory in Lanka, Rama returned to Ayodhya and was crowned king. His reign, known as Rama Rajya, became the golden age of justice and prosperity. However, questions about Sita's purity during captivity led to her exile, and ultimately her return to the Earth.",
+    cinematic:
+      "Ayodhya is bathed in golden light as Rama ascends the throne. The kingdom flourishes under his just rule. Yet shadows linger — whispers of doubt reach the king's ears. In a forest clearing, Sita stands alone, her dignity unshaken. She calls upon Mother Earth, who rises to embrace her daughter, taking her home forever.",
+    lesson:
+      "Even the most righteous must face impossible choices. Rama Rajya teaches that leadership demands personal sacrifice, and that truth and duty sometimes walk a painful path.",
+  },
 };
 
 const StoryDetail = () => {
@@ -112,14 +123,14 @@ const StoryDetail = () => {
         className="space-y-5"
       >
         {/* Event Title */}
-        <div className="rounded-xl border border-gold/20 bg-card p-5 shadow-card">
+        <div className="rounded-xl glass-card p-5">
           <h2 className="text-xl font-display font-bold text-gradient-gold">
             {story.event}
           </h2>
         </div>
 
         {/* Sanskrit */}
-        <div className="rounded-xl border border-gold/10 bg-card p-5 shadow-card">
+        <div className="rounded-xl glass-card p-5">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/70">
             Sanskrit
           </h3>
@@ -129,7 +140,7 @@ const StoryDetail = () => {
         </div>
 
         {/* Explanation */}
-        <div className="rounded-xl border border-gold/10 bg-card p-5 shadow-card">
+        <div className="rounded-xl glass-card p-5">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/70">
             Modern Explanation
           </h3>
@@ -139,7 +150,7 @@ const StoryDetail = () => {
         </div>
 
         {/* Cinematic */}
-        <div className="rounded-xl border border-gold/10 bg-card p-5 shadow-card">
+        <div className="rounded-xl glass-card p-5">
           <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/70">
             Cinematic Version
           </h3>

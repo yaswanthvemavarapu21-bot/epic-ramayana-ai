@@ -42,6 +42,19 @@ const locations = [
   },
 ];
 
+// SVG path points matching location positions (percentage-based, mapped to viewBox 0-100)
+const pathPoints = [
+  { x: 48, y: 28 },  // Ayodhya
+  { x: 40, y: 48 },  // Forest
+  { x: 38, y: 58 },  // Kishkindha
+  { x: 42, y: 72 },  // Rameshwaram
+  { x: 45, y: 80 },  // Lanka
+];
+
+const pathD = pathPoints
+  .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+  .join(" ");
+
 const JourneyMap = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string | null>(null);
@@ -65,12 +78,29 @@ const JourneyMap = () => {
         Trace Rama's sacred path across the land
       </p>
 
-      <div className="relative mx-6 overflow-hidden rounded-xl border border-gold/20 shadow-card">
+      <div className="relative mx-6 overflow-hidden rounded-xl glass-card">
         <img
           src={mapImage}
           alt="Journey Map of Ramayana"
           className="w-full object-cover opacity-60"
         />
+
+        {/* Glowing golden path */}
+        <svg
+          className="absolute inset-0 h-full w-full glow-path animate-path-glow"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          <path
+            d={pathD}
+            stroke="hsl(43, 56%, 52%)"
+            strokeWidth="0.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray="2 1.5"
+          />
+        </svg>
 
         {/* Markers */}
         {locations.map((loc) => (
@@ -105,7 +135,7 @@ const JourneyMap = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="mx-6 mt-4 rounded-xl border border-gold/20 bg-card p-5 shadow-card"
+            className="mx-6 mt-4 rounded-xl glass-card p-5"
           >
             <div className="flex items-start justify-between">
               <div>

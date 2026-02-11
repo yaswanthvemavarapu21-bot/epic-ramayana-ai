@@ -35,7 +35,7 @@ const AboutScreen = () => {
           <p className="mt-1 text-xs text-muted-foreground">Version 1.0.0</p>
         </div>
 
-        <div className="rounded-xl border border-gold/15 bg-card p-5 shadow-card">
+        <div className="rounded-xl glass-card p-5">
           <p className="text-sm leading-relaxed text-foreground/90">
             Ramayana AI brings the timeless wisdom of Valmiki Ramayana to life
             through modern technology. Explore the epic through immersive
