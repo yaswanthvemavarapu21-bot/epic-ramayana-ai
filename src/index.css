@@ -126,6 +126,38 @@
     box-shadow: var(--shadow-card);
   }
 
+  .glass-card {
+    background: hsla(210, 40%, 14%, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsla(43, 56%, 52%, 0.15);
+    box-shadow: 0 8px 32px -8px hsla(210, 45%, 5%, 0.5), inset 0 1px 0 hsla(43, 56%, 52%, 0.08);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s ease;
+  }
+  .glass-card-hover:hover {
+    border-color: hsla(43, 56%, 52%, 0.35);
+    box-shadow: 0 8px 40px -8px hsla(43, 56%, 52%, 0.2), inset 0 1px 0 hsla(43, 56%, 52%, 0.12);
+    transform: translateY(-2px);
+  }
+  .glass-card-hover:active {
+    transform: scale(0.98);
+  }
+
+  .glow-path {
+    filter: drop-shadow(0 0 6px hsla(43, 56%, 52%, 0.6)) drop-shadow(0 0 12px hsla(43, 56%, 52%, 0.3));
+  }
+
+  @keyframes path-glow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .animate-path-glow {
+    animation: path-glow 3s ease-in-out infinite;
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;

@@ -6,7 +6,7 @@ import { ChevronLeft, Moon, Sun, Type, Volume2, VolumeX, Info } from "lucide-rea
 const SettingsScreen = () => {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(true);
-  const [textSize, setTextSize] = useState(1); // 0=small, 1=medium, 2=large
+  const [textSize, setTextSize] = useState(1);
   const [sound, setSound] = useState(true);
   const textSizes = ["Small", "Medium", "Large"];
 
@@ -31,7 +31,7 @@ const SettingsScreen = () => {
         className="space-y-3"
       >
         {/* Dark Mode */}
-        <div className="flex items-center justify-between rounded-xl border border-gold/15 bg-card p-4 shadow-card">
+        <div className="flex items-center justify-between rounded-xl glass-card p-4">
           <div className="flex items-center gap-3">
             {darkMode ? (
               <Moon className="h-5 w-5 text-primary" />
@@ -57,7 +57,7 @@ const SettingsScreen = () => {
         </div>
 
         {/* Text Size */}
-        <div className="rounded-xl border border-gold/15 bg-card p-4 shadow-card">
+        <div className="rounded-xl glass-card p-4">
           <div className="mb-3 flex items-center gap-3">
             <Type className="h-5 w-5 text-primary" />
             <span className="text-sm font-medium text-foreground">
@@ -82,7 +82,7 @@ const SettingsScreen = () => {
         </div>
 
         {/* Sound */}
-        <div className="flex items-center justify-between rounded-xl border border-gold/15 bg-card p-4 shadow-card">
+        <div className="flex items-center justify-between rounded-xl glass-card p-4">
           <div className="flex items-center gap-3">
             {sound ? (
               <Volume2 className="h-5 w-5 text-primary" />
@@ -108,7 +108,7 @@ const SettingsScreen = () => {
         {/* About */}
         <button
           onClick={() => navigate("/about")}
-          className="flex w-full items-center gap-3 rounded-xl border border-gold/15 bg-card p-4 shadow-card text-left"
+          className="flex w-full items-center gap-3 rounded-xl glass-card glass-card-hover p-4 text-left"
         >
           <Info className="h-5 w-5 text-primary" />
           <span className="text-sm font-medium text-foreground">About</span>

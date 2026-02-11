@@ -17,13 +17,13 @@ const menuItems = [
   },
   {
     label: "Life Lessons",
-    description: "Timeless wisdom for today",
+    description: "Timeless wisdom for modern life",
     icon: Lightbulb,
     path: "/life-lessons",
   },
   {
     label: "Journey Map",
-    description: "Trace the sacred path",
+    description: "Trace Rama's sacred path",
     icon: Map,
     path: "/journey-map",
   },
@@ -73,7 +73,7 @@ const HomeScreen = () => {
             key={menuItem.label}
             variants={item}
             onClick={() => navigate(menuItem.path)}
-            className="group flex items-center gap-4 rounded-xl border border-gold/20 bg-card p-5 text-left shadow-card transition-all duration-300 hover:border-gold/40 hover:shadow-gold active:scale-[0.98]"
+            className="group flex items-center gap-4 rounded-xl glass-card glass-card-hover p-5 text-left"
           >
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary/10">
               <menuItem.icon className="h-6 w-6 text-primary" />

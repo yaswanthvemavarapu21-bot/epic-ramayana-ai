@@ -58,7 +58,6 @@ const ChatScreen = () => {
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
 
-    // Simulated AI response
     setTimeout(() => {
       const aiMsg: Message = {
         id: Date.now() + 1,
@@ -97,7 +96,7 @@ const ChatScreen = () => {
               className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                 msg.sender === "user"
                   ? "ml-auto bg-primary text-primary-foreground rounded-br-md"
-                  : "mr-auto bg-card border border-gold/15 text-foreground rounded-bl-md"
+                  : "mr-auto glass-card text-foreground rounded-bl-md"
               }`}
             >
               {msg.text}
@@ -115,7 +114,7 @@ const ChatScreen = () => {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             placeholder="Ask a question..."
-            className="flex-1 rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
+            className="flex-1 rounded-xl glass-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
           />
           <button
             onClick={sendMessage}
