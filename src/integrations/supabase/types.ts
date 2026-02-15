@@ -14,7 +14,214 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookmarks: {
+        Row: {
+          chapter_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          chapter_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          chapter_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookmarks_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chapters: {
+        Row: {
+          chapter_number: number
+          cinematic_version: string | null
+          created_at: string
+          explanation: string | null
+          id: string
+          kanda_id: string
+          sanskrit_text: string | null
+          title: string
+        }
+        Insert: {
+          chapter_number?: number
+          cinematic_version?: string | null
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          kanda_id: string
+          sanskrit_text?: string | null
+          title: string
+        }
+        Update: {
+          chapter_number?: number
+          cinematic_version?: string | null
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          kanda_id?: string
+          sanskrit_text?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chapters_kanda_id_fkey"
+            columns: ["kanda_id"]
+            isOneToOne: false
+            referencedRelation: "kandas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_history: {
+        Row: {
+          ai_response: string
+          character: string
+          created_at: string
+          id: string
+          user_id: string
+          user_message: string
+        }
+        Insert: {
+          ai_response: string
+          character: string
+          created_at?: string
+          id?: string
+          user_id: string
+          user_message: string
+        }
+        Update: {
+          ai_response?: string
+          character?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+          user_message?: string
+        }
+        Relationships: []
+      }
+      kandas: {
+        Row: {
+          chapter_count: number
+          created_at: string
+          description: string
+          display_order: number
+          id: string
+          name: string
+        }
+        Insert: {
+          chapter_count?: number
+          created_at?: string
+          description?: string
+          display_order?: number
+          id?: string
+          name: string
+        }
+        Update: {
+          chapter_count?: number
+          created_at?: string
+          description?: string
+          display_order?: number
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      lessons: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          modern_application: string
+          related_kanda: string | null
+          teaching: string
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          modern_application?: string
+          related_kanda?: string | null
+          teaching?: string
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          modern_application?: string
+          related_kanda?: string | null
+          teaching?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      locations: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          id: string
+          latitude: number
+          longitude: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          id?: string
+          latitude?: number
+          longitude?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          id?: string
+          latitude?: number
+          longitude?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id: string
+          name?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
