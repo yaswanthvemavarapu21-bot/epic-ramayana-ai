@@ -1,14 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, Moon, Sun, Type, Volume2, VolumeX, Info } from "lucide-react";
+import { ChevronLeft, Moon, Sun, Type, Volume2, VolumeX, Info, LogIn, LogOut, User } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "@/hooks/use-toast";
 
 const SettingsScreen = () => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const [darkMode, setDarkMode] = useState(true);
   const [textSize, setTextSize] = useState(1);
   const [sound, setSound] = useState(true);
   const textSizes = ["Small", "Medium", "Large"];
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({ title: "Signed out", description: "You have been signed out." });
+    navigate("/home");
+  };
 
   return (
     <div className="min-h-screen bg-background px-6 pb-24 pt-14">
@@ -104,6 +113,36 @@ const SettingsScreen = () => {
             />
           </button>
         </div>
+
+        {/* Account */}
+        {user ? (
+          <>
+            <div className="flex items-center gap-3 rounded-xl glass-card p-4">
+              <User className="h-5 w-5 text-primary" />
+              <div>
+                <span className="text-sm font-medium text-foreground">
+                  {user.email}
+                </span>
+                <p className="text-xs text-muted-foreground">Signed in</p>
+              </div>
+            </div>
+            <button
+              onClick={handleSignOut}
+              className="flex w-full items-center gap-3 rounded-xl glass-card glass-card-hover p-4 text-left"
+            >
+              <LogOut className="h-5 w-5 text-destructive" />
+              <span className="text-sm font-medium text-destructive">Sign Out</span>
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => navigate("/auth")}
+            className="flex w-full items-center gap-3 rounded-xl glass-card glass-card-hover p-4 text-left"
+          >
+            <LogIn className="h-5 w-5 text-primary" />
+            <span className="text-sm font-medium text-foreground">Sign In</span>
+          </button>
+        )}
 
         {/* About */}
         <button
