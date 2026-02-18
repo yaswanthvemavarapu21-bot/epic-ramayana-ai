@@ -1,177 +1,217 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ChevronLeft, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, Sparkles, BookOpen, ChevronDown } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
-const storyData: Record<string, {
+// Map URL slugs back to DB kanda names
+const slugToName: Record<string, string> = {
+  bala: "Bala Kanda",
+  ayodhya: "Ayodhya Kanda",
+  aranya: "Aranya Kanda",
+  kishkindha: "Kishkindha Kanda",
+  sundara: "Sundara Kanda",
+  yuddha: "Yuddha Kanda",
+  uttara: "Uttara Kanda",
+};
+
+type Chapter = {
+  id: string;
+  chapter_number: number;
   title: string;
-  event: string;
-  sanskrit: string;
-  explanation: string;
-  cinematic: string;
-  lesson: string;
-}> = {
-  bala: {
-    title: "Bala Kanda",
-    event: "The Birth of Rama",
-    sanskrit: "दशरथस्य पुत्रः रामः अयोध्यायां जातः।",
-    explanation:
-      "King Dasharatha of Ayodhya performed the sacred Putrakameshti Yajna, and from the divine fire emerged a celestial offering. His three queens — Kausalya, Sumitra, and Kaikeyi — were blessed with four sons: Rama, Lakshmana, Bharata, and Shatrughna.",
-    cinematic:
-      "The sacred fire rises high into the night sky of Ayodhya. A golden vessel emerges from the flames, radiating divine light. As Queen Kausalya holds the newborn Rama, celestial flowers rain down from the heavens, and the entire kingdom erupts in joyous celebration.",
-    lesson:
-      "Great things often begin with sincere devotion and patience. Dasharatha's years of righteous rule and deep prayer were rewarded with divine grace.",
-  },
-  ayodhya: {
-    title: "Ayodhya Kanda",
-    event: "The Exile of Rama",
-    sanskrit: "रामः चतुर्दशवर्षाणि वनवासं गतवान्।",
-    explanation:
-      "On the eve of Rama's coronation, Queen Kaikeyi, influenced by her maid Manthara, demanded two boons from King Dasharatha — the exile of Rama for fourteen years and the coronation of her son Bharata instead.",
-    cinematic:
-      "The grand coronation hall falls silent. Rama, adorned in royal garments, calmly removes his crown and dons the bark of an ascetic. Sita and Lakshmana follow without hesitation. The gates of Ayodhya close behind them as the city weeps.",
-    lesson:
-      "True strength lies in accepting life's challenges with grace. Rama's unwavering adherence to dharma, even at great personal cost, shows the power of duty over desire.",
-  },
-  aranya: {
-    title: "Aranya Kanda",
-    event: "Sita's Abduction",
-    sanskrit: "रावणः सीतां हृतवान् वञ्चनया।",
-    explanation:
-      "While living in the Dandaka forest, the demoness Surpanakha's humiliation set off a chain of events. Ravana, the mighty king of Lanka, disguised himself as a sage and abducted Sita while Rama and Lakshmana were distracted by the golden deer Maricha.",
-    cinematic:
-      "A golden deer darts through the emerald forest. Rama chases it with his bow. In the hermitage, a mendicant approaches Sita. The Lakshman Rekha glows faintly on the ground. As Sita steps beyond it, Ravana reveals his true form — ten heads rising against the darkening sky.",
-    lesson:
-      "Deception can take the most beautiful forms. Vigilance and discernment are essential, for appearances can conceal the gravest dangers.",
-  },
-  kishkindha: {
-    title: "Kishkindha Kanda",
-    event: "Alliance with Sugriva",
-    sanskrit: "रामः सुग्रीवेण सख्यं कृतवान्।",
-    explanation:
-      "Rama and Lakshmana reached Kishkindha, where they befriended Hanuman and formed an alliance with the exiled monkey king Sugriva. Rama helped Sugriva defeat his brother Vali, and in return, Sugriva pledged his entire army to search for Sita.",
-    cinematic:
-      "Atop the misty Rishyamuka mountain, Hanuman leaps down in disguise. Recognition sparks in his eyes. A fire blazes as Rama and Sugriva circle it, binding their friendship. In the distance, the vast monkey army stirs, ready for the greatest search in history.",
-    lesson:
-      "True alliances are built on mutual trust and reciprocity. Helping others in their time of need creates bonds that can move mountains.",
-  },
-  sundara: {
-    title: "Sundara Kanda",
-    event: "Hanuman's Leap to Lanka",
-    sanskrit: "हनुमान् समुद्रं लङ्घित्वा लङ्कां गतवान्।",
-    explanation:
-      "Hanuman, the mighty devotee of Rama, took a colossal leap across the ocean to Lanka. He found Sita in the Ashoka garden, delivered Rama's ring as proof, and set Lanka ablaze with his burning tail before returning with the joyous news.",
-    cinematic:
-      "The ocean stretches to infinity. Hanuman grows to mountainous size, his eyes blazing with devotion. With a thunderous cry of 'Jai Shri Ram,' he launches into the sky. Waves part below. In Lanka's moonlit garden, a weeping Sita clutches a small golden ring — and hope returns.",
-    lesson:
-      "Devotion and courage can overcome any obstacle. Hanuman's unwavering faith in Rama gave him the strength to achieve the impossible.",
-  },
-  yuddha: {
-    title: "Yuddha Kanda",
-    event: "The Battle of Lanka",
-    sanskrit: "रामः रावणं युद्धे निहतवान्।",
-    explanation:
-      "The great war between Rama's army and Ravana's forces raged across Lanka. After fierce battles, divine weapons, and immense sacrifices on both sides, Rama defeated Ravana with the Brahmastra. Sita was rescued, and dharma was restored.",
-    cinematic:
-      "The bridge of stones stretches across the churning sea. Armies clash on golden shores. Ravana's ten heads sneer in defiance. Arrow meets arrow in cascading light. Finally, a single divine arrow — glowing with the fire of righteousness — strikes Ravana's heart. The demon king falls. The sky clears. Rama and Sita reunite as flowers rain from the heavens.",
-    lesson:
-      "No matter how powerful evil becomes, righteousness will ultimately prevail. The battle for dharma requires patience, sacrifice, and unwavering resolve.",
-  },
-  uttara: {
-    title: "Uttara Kanda",
-    event: "The Reign of Rama",
-    sanskrit: "रामः अयोध्यायां राज्यं शासितवान्।",
-    explanation:
-      "After the victory in Lanka, Rama returned to Ayodhya and was crowned king. His reign, known as Rama Rajya, became the golden age of justice and prosperity. However, questions about Sita's purity during captivity led to her exile, and ultimately her return to the Earth.",
-    cinematic:
-      "Ayodhya is bathed in golden light as Rama ascends the throne. The kingdom flourishes under his just rule. Yet shadows linger — whispers of doubt reach the king's ears. In a forest clearing, Sita stands alone, her dignity unshaken. She calls upon Mother Earth, who rises to embrace her daughter, taking her home forever.",
-    lesson:
-      "Even the most righteous must face impossible choices. Rama Rajya teaches that leadership demands personal sacrifice, and that truth and duty sometimes walk a painful path.",
-  },
+  sanskrit_text: string | null;
+  explanation: string | null;
+  cinematic_version: string | null;
+};
+
+const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) => {
+  const [open, setOpen] = useState(index === 0);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: index * 0.06 }}
+      className="rounded-xl glass-card overflow-hidden"
+    >
+      {/* Header / toggle */}
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between p-4 text-left"
+      >
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-display text-sm font-bold text-primary">
+            {chapter.chapter_number}
+          </div>
+          <h3 className="text-sm font-semibold text-foreground">
+            {chapter.title}
+          </h3>
+        </div>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-300 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-4 px-4 pb-5">
+              {/* Sanskrit */}
+              {chapter.sanskrit_text && (
+                <div className="rounded-lg bg-primary/5 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/60">
+                    Sanskrit
+                  </p>
+                  <p className="font-display text-sm italic text-foreground/80">
+                    {chapter.sanskrit_text}
+                  </p>
+                </div>
+              )}
+
+              {/* Explanation */}
+              {chapter.explanation && (
+                <div>
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/60">
+                    Modern Explanation
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/90">
+                    {chapter.explanation}
+                  </p>
+                </div>
+              )}
+
+              {/* Cinematic */}
+              {chapter.cinematic_version && (
+                <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                  <div className="mb-1 flex items-center gap-1.5">
+                    <Sparkles className="h-3 w-3 text-primary" />
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-primary/70">
+                      Cinematic Version
+                    </p>
+                  </div>
+                  <p className="text-sm leading-relaxed italic text-foreground/85">
+                    {chapter.cinematic_version}
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
 };
 
 const StoryDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const story = storyData[id || "bala"];
 
-  if (!story) {
+  const kandaName = slugToName[id ?? ""] ?? "";
+
+  // Fetch the kanda record
+  const { data: kanda, isLoading: kandaLoading } = useQuery({
+    queryKey: ["kanda", kandaName],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("kandas")
+        .select("*")
+        .eq("name", kandaName)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!kandaName,
+  });
+
+  // Fetch chapters for this kanda
+  const { data: chapters, isLoading: chaptersLoading } = useQuery({
+    queryKey: ["chapters", kanda?.id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("chapters")
+        .select("*")
+        .eq("kanda_id", kanda!.id)
+        .order("chapter_number");
+      if (error) throw error;
+      return data as Chapter[];
+    },
+    enabled: !!kanda?.id,
+  });
+
+  const isLoading = kandaLoading || chaptersLoading;
+
+  if (!kandaName) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <p className="text-muted-foreground">Story not found</p>
+        <p className="text-muted-foreground">Kanda not found.</p>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background px-6 pb-24 pt-14">
-      <div className="mb-6 flex items-center gap-3">
+      {/* Header */}
+      <div className="mb-2 flex items-center gap-3">
         <button
           onClick={() => navigate("/story-mode")}
           className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-foreground"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
-        <h1 className="text-xl font-display font-bold text-foreground">
-          {story.title}
-        </h1>
+        <div>
+          <h1 className="text-xl font-display font-bold text-foreground">
+            {kandaName}
+          </h1>
+          {kanda && (
+            <p className="text-xs text-muted-foreground">{kanda.description}</p>
+          )}
+        </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="space-y-5"
-      >
-        {/* Event Title */}
-        <div className="rounded-xl glass-card p-5">
-          <h2 className="text-xl font-display font-bold text-gradient-gold">
-            {story.event}
-          </h2>
-        </div>
+      {kanda && (
+        <p className="mb-6 text-xs text-muted-foreground">
+          {chapters?.length ?? "—"} chapters available
+        </p>
+      )}
 
-        {/* Sanskrit */}
-        <div className="rounded-xl glass-card p-5">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/70">
-            Sanskrit
-          </h3>
-          <p className="font-display text-base italic text-foreground/80">
-            {story.sanskrit}
+      {/* Skeleton loading */}
+      {isLoading && (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full rounded-xl" />
+          ))}
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!isLoading && (!chapters || chapters.length === 0) && (
+        <div className="flex flex-col items-center gap-3 py-20 text-center">
+          <BookOpen className="h-10 w-10 text-muted-foreground/40" />
+          <p className="text-sm text-muted-foreground">
+            No chapters available yet.
           </p>
         </div>
+      )}
 
-        {/* Explanation */}
-        <div className="rounded-xl glass-card p-5">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/70">
-            Modern Explanation
-          </h3>
-          <p className="text-sm leading-relaxed text-foreground/90">
-            {story.explanation}
-          </p>
+      {/* Chapter list */}
+      {!isLoading && chapters && chapters.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {chapters.map((chapter, index) => (
+            <ChapterCard key={chapter.id} chapter={chapter} index={index} />
+          ))}
         </div>
-
-        {/* Cinematic */}
-        <div className="rounded-xl glass-card p-5">
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-primary/70">
-            Cinematic Version
-          </h3>
-          <p className="text-sm leading-relaxed text-foreground/90 italic">
-            {story.cinematic}
-          </p>
-        </div>
-
-        {/* Life Lesson */}
-        <div className="rounded-xl border border-primary/30 bg-primary/10 p-5 shadow-gold">
-          <div className="mb-2 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
-              Life Lesson
-            </h3>
-          </div>
-          <p className="text-sm leading-relaxed text-foreground/90">
-            {story.lesson}
-          </p>
-        </div>
-      </motion.div>
+      )}
     </div>
   );
 };

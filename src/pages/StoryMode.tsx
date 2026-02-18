@@ -1,58 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const kandas = [
-  {
-    id: "bala",
-    name: "Bala Kanda",
-    subtitle: "The Book of Youth",
-    description: "Birth and early life of Rama, his education and marriage to Sita.",
-    chapters: 77,
-  },
-  {
-    id: "ayodhya",
-    name: "Ayodhya Kanda",
-    subtitle: "The Book of Ayodhya",
-    description: "Rama's exile from Ayodhya for fourteen years into the forest.",
-    chapters: 119,
-  },
-  {
-    id: "aranya",
-    name: "Aranya Kanda",
-    subtitle: "The Book of the Forest",
-    description: "Life in the forest, encounters with sages, and Sita's abduction.",
-    chapters: 75,
-  },
-  {
-    id: "kishkindha",
-    name: "Kishkindha Kanda",
-    subtitle: "The Book of Kishkindha",
-    description: "Alliance with Sugriva and the monkey kingdom, search for Sita.",
-    chapters: 67,
-  },
-  {
-    id: "sundara",
-    name: "Sundara Kanda",
-    subtitle: "The Beautiful Book",
-    description: "Hanuman's journey to Lanka, finding Sita, and his heroic deeds.",
-    chapters: 68,
-  },
-  {
-    id: "yuddha",
-    name: "Yuddha Kanda",
-    subtitle: "The Book of War",
-    description: "The great battle between Rama's forces and Ravana's army.",
-    chapters: 131,
-  },
-  {
-    id: "uttara",
-    name: "Uttara Kanda",
-    subtitle: "The Final Book",
-    description: "Rama's reign, the test of Sita, and the conclusion of the epic.",
-    chapters: 111,
-  },
-];
+// Map DB kanda names to URL slugs
+const nameToSlug: Record<string, string> = {
+  "Bala Kanda": "bala",
+  "Ayodhya Kanda": "ayodhya",
+  "Aranya Kanda": "aranya",
+  "Kishkindha Kanda": "kishkindha",
+  "Sundara Kanda": "sundara",
+  "Yuddha Kanda": "yuddha",
+  "Uttara Kanda": "uttara",
+};
+
+const subtitles: Record<string, string> = {
+  "Bala Kanda": "The Book of Youth",
+  "Ayodhya Kanda": "The Book of Ayodhya",
+  "Aranya Kanda": "The Book of the Forest",
+  "Kishkindha Kanda": "The Book of Kishkindha",
+  "Sundara Kanda": "The Beautiful Book",
+  "Yuddha Kanda": "The Book of War",
+  "Uttara Kanda": "The Final Book",
+};
 
 const container = {
   hidden: { opacity: 0 },
@@ -66,6 +38,18 @@ const item = {
 
 const StoryMode = () => {
   const navigate = useNavigate();
+
+  const { data: kandas, isLoading } = useQuery({
+    queryKey: ["kandas"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("kandas")
+        .select("*")
+        .order("display_order");
+      if (error) throw error;
+      return data;
+    },
+  });
 
   return (
     <div className="min-h-screen bg-background px-6 pb-24 pt-14">
@@ -85,36 +69,55 @@ const StoryMode = () => {
         Explore the seven books of Valmiki Ramayana
       </p>
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="flex flex-col gap-3"
-      >
-        {kandas.map((kanda, index) => (
-          <motion.button
-            key={kanda.id}
-            variants={item}
-            onClick={() => navigate(`/story/${kanda.id}`)}
-            className="group flex items-center justify-between rounded-xl glass-card glass-card-hover p-4 text-left"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-display text-lg font-bold text-primary">
-                {index + 1}
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-foreground">
-                  {kanda.name}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  {kanda.subtitle} · {kanda.chapters} chapters
-                </p>
-              </div>
-            </div>
-            <ChevronRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
-          </motion.button>
-        ))}
-      </motion.div>
+      {isLoading ? (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <Skeleton key={i} className="h-[72px] w-full rounded-xl" />
+          ))}
+        </div>
+      ) : (
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="flex flex-col gap-3"
+        >
+          {kandas?.map((kanda, index) => {
+            const slug = nameToSlug[kanda.name] ?? kanda.name.toLowerCase();
+            const subtitle = subtitles[kanda.name] ?? "";
+            return (
+              <motion.button
+                key={kanda.id}
+                variants={item}
+                onClick={() => navigate(`/story/${slug}`)}
+                className="group flex items-center justify-between rounded-xl glass-card glass-card-hover p-4 text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-display text-lg font-bold text-primary">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-foreground">
+                      {kanda.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {subtitle} · {kanda.chapter_count} chapters
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      )}
+
+      {!isLoading && !kandas?.length && (
+        <div className="flex flex-col items-center gap-3 py-20 text-center">
+          <BookOpen className="h-10 w-10 text-muted-foreground/40" />
+          <p className="text-sm text-muted-foreground">No kandas found.</p>
+        </div>
+      )}
     </div>
   );
 };
