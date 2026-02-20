@@ -52,6 +52,7 @@ export type Database = {
           id: string
           kanda_id: string
           sanskrit_text: string | null
+          telugu_text: string | null
           title: string
         }
         Insert: {
@@ -62,6 +63,7 @@ export type Database = {
           id?: string
           kanda_id: string
           sanskrit_text?: string | null
+          telugu_text?: string | null
           title: string
         }
         Update: {
@@ -72,6 +74,7 @@ export type Database = {
           id?: string
           kanda_id?: string
           sanskrit_text?: string | null
+          telugu_text?: string | null
           title?: string
         }
         Relationships: [
