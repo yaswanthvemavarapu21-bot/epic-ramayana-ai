@@ -22,6 +22,7 @@ type Chapter = {
   chapter_number: number;
   title: string;
   sanskrit_text: string | null;
+  telugu_text: string | null;
   explanation: string | null;
   cinematic_version: string | null;
 };
@@ -75,6 +76,18 @@ const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) =>
                   </p>
                   <p className="font-display text-sm italic text-foreground/80">
                     {chapter.sanskrit_text}
+                  </p>
+                </div>
+              )}
+
+              {/* Telugu */}
+              {chapter.telugu_text && (
+                <div className="rounded-lg bg-accent/10 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-accent-foreground/60">
+                    తెలుగు (Telugu)
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {chapter.telugu_text}
                   </p>
                 </div>
               )}
