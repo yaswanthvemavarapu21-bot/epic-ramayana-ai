@@ -49,9 +49,13 @@ export type Database = {
           cinematic_version: string | null
           created_at: string
           explanation: string | null
+          hindi_text: string | null
           id: string
           kanda_id: string
+          kannada_text: string | null
+          malayalam_text: string | null
           sanskrit_text: string | null
+          tamil_text: string | null
           telugu_text: string | null
           title: string
         }
@@ -60,9 +64,13 @@ export type Database = {
           cinematic_version?: string | null
           created_at?: string
           explanation?: string | null
+          hindi_text?: string | null
           id?: string
           kanda_id: string
+          kannada_text?: string | null
+          malayalam_text?: string | null
           sanskrit_text?: string | null
+          tamil_text?: string | null
           telugu_text?: string | null
           title: string
         }
@@ -71,9 +79,13 @@ export type Database = {
           cinematic_version?: string | null
           created_at?: string
           explanation?: string | null
+          hindi_text?: string | null
           id?: string
           kanda_id?: string
+          kannada_text?: string | null
+          malayalam_text?: string | null
           sanskrit_text?: string | null
+          tamil_text?: string | null
           telugu_text?: string | null
           title?: string
         }
