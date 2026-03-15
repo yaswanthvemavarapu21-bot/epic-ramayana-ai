@@ -23,6 +23,10 @@ type Chapter = {
   title: string;
   sanskrit_text: string | null;
   telugu_text: string | null;
+  hindi_text: string | null;
+  tamil_text: string | null;
+  kannada_text: string | null;
+  malayalam_text: string | null;
   explanation: string | null;
   cinematic_version: string | null;
 };
@@ -72,7 +76,7 @@ const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) =>
               {chapter.sanskrit_text && (
                 <div className="rounded-lg bg-primary/5 p-3">
                   <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-primary/60">
-                    Sanskrit
+                    संस्कृत (Sanskrit)
                   </p>
                   <p className="font-display text-sm italic text-foreground/80">
                     {chapter.sanskrit_text}
@@ -88,6 +92,54 @@ const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) =>
                   </p>
                   <p className="text-sm leading-relaxed text-foreground/85">
                     {chapter.telugu_text}
+                  </p>
+                </div>
+              )}
+
+              {/* Hindi */}
+              {chapter.hindi_text && (
+                <div className="rounded-lg bg-orange-500/10 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-orange-600/70">
+                    हिन्दी (Hindi)
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {chapter.hindi_text}
+                  </p>
+                </div>
+              )}
+
+              {/* Tamil */}
+              {chapter.tamil_text && (
+                <div className="rounded-lg bg-emerald-500/10 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-emerald-600/70">
+                    தமிழ் (Tamil)
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {chapter.tamil_text}
+                  </p>
+                </div>
+              )}
+
+              {/* Kannada */}
+              {chapter.kannada_text && (
+                <div className="rounded-lg bg-blue-500/10 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-blue-600/70">
+                    ಕನ್ನಡ (Kannada)
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {chapter.kannada_text}
+                  </p>
+                </div>
+              )}
+
+              {/* Malayalam */}
+              {chapter.malayalam_text && (
+                <div className="rounded-lg bg-rose-500/10 p-3">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-rose-600/70">
+                    മലയാളം (Malayalam)
+                  </p>
+                  <p className="text-sm leading-relaxed text-foreground/85">
+                    {chapter.malayalam_text}
                   </p>
                 </div>
               )}
