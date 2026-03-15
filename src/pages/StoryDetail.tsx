@@ -23,6 +23,10 @@ type Chapter = {
   title: string;
   sanskrit_text: string | null;
   telugu_text: string | null;
+  hindi_text: string | null;
+  tamil_text: string | null;
+  kannada_text: string | null;
+  malayalam_text: string | null;
   explanation: string | null;
   cinematic_version: string | null;
 };
