@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Sparkles, BookOpen, ChevronDown } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { ChevronLeft, Sparkles, BookOpen, ChevronDown, ImageIcon, Loader2 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
+import { toast } from "sonner";
 
 // Map URL slugs back to DB kanda names
 const slugToName: Record<string, string> = {
