@@ -29,6 +29,7 @@ type Chapter = {
   malayalam_text: string | null;
   explanation: string | null;
   cinematic_version: string | null;
+  image_url: string | null;
 };
 
 const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) => {
@@ -72,6 +73,17 @@ const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) =>
             className="overflow-hidden"
           >
             <div className="space-y-4 px-4 pb-5">
+              {/* Chapter Image */}
+              {chapter.image_url && (
+                <div className="overflow-hidden rounded-lg">
+                  <img
+                    src={chapter.image_url}
+                    alt={chapter.title}
+                    className="h-48 w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
               {/* Sanskrit */}
               {chapter.sanskrit_text && (
                 <div className="rounded-lg bg-primary/5 p-3">
