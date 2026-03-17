@@ -51,6 +51,7 @@ export type Database = {
           explanation: string | null
           hindi_text: string | null
           id: string
+          image_url: string | null
           kanda_id: string
           kannada_text: string | null
           malayalam_text: string | null
@@ -66,6 +67,7 @@ export type Database = {
           explanation?: string | null
           hindi_text?: string | null
           id?: string
+          image_url?: string | null
           kanda_id: string
           kannada_text?: string | null
           malayalam_text?: string | null
@@ -81,6 +83,7 @@ export type Database = {
           explanation?: string | null
           hindi_text?: string | null
           id?: string
+          image_url?: string | null
           kanda_id?: string
           kannada_text?: string | null
           malayalam_text?: string | null
