@@ -2,3 +2,6 @@ project_id = "pdouejzeukagvbvbdsbk"
 
 [functions.chat]
 verify_jwt = false
+
+[functions.generate-chapter-images]
+verify_jwt = false
