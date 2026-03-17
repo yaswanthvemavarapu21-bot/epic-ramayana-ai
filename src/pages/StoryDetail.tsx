@@ -29,6 +29,7 @@ type Chapter = {
   malayalam_text: string | null;
   explanation: string | null;
   cinematic_version: string | null;
+  image_url: string | null;
 };
 
 const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) => {
