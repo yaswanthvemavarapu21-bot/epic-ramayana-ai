@@ -42,7 +42,7 @@
 
 ### ✨ Experience the Divine Now ✨
 
-**[🎯 Click here to see the live demo](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID)**
+**[🎯 Click here to see the live demo](https://preview--epic-ramayana-ai.lovable.app)**
 
 <img src="https://img.shields.io/badge/Status-Live_&_Beautiful-brightgreen?style=for-the-badge" alt="Live Status" />
 
