@@ -60,7 +60,7 @@
 
 ```bash
 # 📥 Step 1: Clone the Sacred Repository
-git clone <YOUR_GIT_URL>
+git clone https://github.com/yaswanthvemavarapu21-bot/epic-ramayana-ai
 cd epic-ramayana-ai
 
 # 📦 Step 2: Install Dependencies
