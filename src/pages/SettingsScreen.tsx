@@ -1,16 +1,14 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, Moon, Sun, Type, Volume2, VolumeX, Info, LogIn, LogOut, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useSettings } from "@/hooks/useSettings";
 import { toast } from "@/hooks/use-toast";
 
 const SettingsScreen = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
-  const [darkMode, setDarkMode] = useState(true);
-  const [textSize, setTextSize] = useState(1);
-  const [sound, setSound] = useState(true);
+  const { darkMode, setDarkMode, textSize, setTextSize, sound, setSound } = useSettings();
   const textSizes = ["Small", "Medium", "Large"];
 
   const handleSignOut = async () => {
@@ -77,7 +75,7 @@ const SettingsScreen = () => {
             {textSizes.map((size, i) => (
               <button
                 key={size}
-                onClick={() => setTextSize(i)}
+                onClick={() => setTextSize(i as 0 | 1 | 2)}
                 className={`flex-1 rounded-lg py-2 text-xs font-medium transition-colors ${
                   textSize === i
                     ? "bg-primary text-primary-foreground"
